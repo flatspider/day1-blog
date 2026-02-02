@@ -9,6 +9,9 @@
   --color-border: #e8e6e3;
   --color-hover: #f0eeeb;
 
+  /* Cool accent for Conway cells - creates tension against warm bg */
+  --color-cool-accent: rgba(100, 140, 160, 0.2);
+
   /* Typography */
   --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;

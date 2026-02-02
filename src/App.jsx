@@ -4,10 +4,12 @@ import Home from './pages/Home'
 import Work from './pages/Work'
 import Writing from './pages/Writing'
 import About from './pages/About'
+import ConwayBackground from './components/ConwayBackground'
 
 function App() {
   return (
     <div className="app">
+      <ConwayBackground />
       <header className="header">
         <nav className="nav">
           <NavLink to="/" className="nav-logo">
