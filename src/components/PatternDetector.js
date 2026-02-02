@@ -346,7 +346,7 @@ export function detectPattern(grid, row, col, rows, cols) {
   if (!isOnLiveCell) {
     // Only show dead cell tooltip occasionally (10% chance) to not be annoying
 
-    if (Math.random() > 0.5) {
+    if (Math.random() > 0.1) {
       return null;
     }
 

@@ -361,11 +361,17 @@ export default function ConwayBackground() {
       handleCanvasHover(e)
     }
 
+    // Listen for reset event from control panel
+    const handleConwayReset = () => {
+      restart()
+    }
+
     document.addEventListener('visibilitychange', handleVisibilityChange)
     window.addEventListener('resize', handleResize)
     window.addEventListener('scroll', handleScroll)
     window.addEventListener('mousemove', handleMouseMove)
     window.addEventListener('mouseleave', handleCanvasLeave)
+    window.addEventListener('conway-reset', handleConwayReset)
 
     animationRef.current = requestAnimationFrame(animate)
 
@@ -375,11 +381,12 @@ export default function ConwayBackground() {
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('mouseleave', handleCanvasLeave)
+      window.removeEventListener('conway-reset', handleConwayReset)
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current)
       }
     }
-  }, [init, animate, handleCanvasHover, handleCanvasLeave])
+  }, [init, animate, handleCanvasHover, handleCanvasLeave, restart])
 
   const showButton = isStable || (TEST_MODE && showTestButton)
 
