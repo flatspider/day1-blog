@@ -178,10 +178,10 @@ export default function ConwayBackground() {
           // Check if this cell is highlighted
           const isHighlighted = highlightSet.has(`${i},${j}`)
 
-          // Draw the cell - phosphor green
+          // Draw the cell - WOPR pale blue
           ctx.fillStyle = isHighlighted && isPaused
-            ? `rgba(57, 255, 20, ${Math.max(opacity, 0.8)})`
-            : `rgba(57, 255, 20, ${opacity})`
+            ? `rgba(184, 212, 232, ${Math.max(opacity, 0.8)})`
+            : `rgba(184, 212, 232, ${opacity})`
 
           ctx.beginPath()
           ctx.arc(
@@ -193,9 +193,9 @@ export default function ConwayBackground() {
           )
           ctx.fill()
 
-          // Draw green outline for highlighted cells
+          // Draw pale blue outline for highlighted cells
           if (isHighlighted && isPaused) {
-            ctx.strokeStyle = '#39ff14'
+            ctx.strokeStyle = '#b8d4e8'
             ctx.lineWidth = 2
             ctx.beginPath()
             ctx.arc(

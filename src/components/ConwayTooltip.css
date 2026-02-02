@@ -1,23 +1,25 @@
-/* Conway Pattern Tooltip - Terminal Style */
+/* Conway Pattern Tooltip - WOPR Terminal Style */
 .conway-tooltip {
   position: fixed;
   z-index: 1000;
   min-width: 160px;
   max-width: 240px;
   padding: 0.75rem 1rem;
-  background: var(--color-bg-elevated, #1a1a1d);
-  border: 1px solid var(--color-accent, #39ff14);
+  background: var(--color-bg-elevated, #121828);
+  border: 1px solid var(--color-accent, #b8d4e8);
   pointer-events: none;
-  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-family: var(--font-mono, 'VT323', monospace);
+  font-size: 1.125rem;
 
   /* Start hidden */
   opacity: 0;
   transform: translateY(5px) scale(0.95);
   transition: opacity 0.15s ease, transform 0.15s ease;
 
-  /* Subtle glow */
-  box-shadow: 0 0 20px rgba(57, 255, 20, 0.1),
-              inset 0 0 30px rgba(57, 255, 20, 0.02);
+  /* WOPR pale blue glow */
+  box-shadow: 0 0 20px rgba(184, 212, 232, 0.15),
+              0 0 40px rgba(184, 212, 232, 0.05),
+              inset 0 0 30px rgba(184, 212, 232, 0.02);
 }
 
 .conway-tooltip.visible {
@@ -33,11 +35,12 @@
 }
 
 .conway-tooltip-type {
-  font-size: 0.625rem;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 400;
   letter-spacing: 0.1em;
-  color: var(--color-accent, #39ff14);
+  color: var(--color-accent, #b8d4e8);
   opacity: 0.8;
+  text-transform: uppercase;
 }
 
 .conway-tooltip-separator {
@@ -46,15 +49,16 @@
 }
 
 .conway-tooltip-name {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  color: var(--color-text, #e8e8e8);
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--color-text, #c8dce8);
+  text-transform: uppercase;
 }
 
 .conway-tooltip-description {
-  font-size: 0.6875rem;
+  font-size: 0.9375rem;
   font-weight: 400;
-  color: var(--color-text-muted, #888888);
+  color: var(--color-text-muted, #7a9aaa);
   line-height: 1.5;
   margin: 0;
 }

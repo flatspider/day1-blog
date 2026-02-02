@@ -32,7 +32,14 @@
 }
 
 .post-link:hover {
-  opacity: 0.7;
+  opacity: 1;
+}
+
+.post-link:hover .post-title {
+  text-shadow:
+    0 0 5px var(--color-accent),
+    0 0 15px var(--color-accent-dim),
+    0 0 25px var(--color-accent-glow);
 }
 
 .post-meta {
@@ -57,10 +64,13 @@
 
 .post-title {
   font-family: var(--font-display);
-  font-size: clamp(1.25rem, 2.5vw, 1.5rem);
-  font-weight: 600;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 400;
   margin-bottom: var(--space-sm);
   line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  transition: text-shadow 0.2s ease;
 }
 
 .post-excerpt {
@@ -92,8 +102,10 @@
 .newsletter h2 {
   font-family: var(--font-display);
   font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 600;
+  font-weight: 400;
   margin-bottom: var(--space-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .newsletter p {

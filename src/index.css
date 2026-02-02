@@ -1,29 +1,30 @@
 :root {
-  /* Base - dark terminal */
-  --color-bg: #0a0a0b;
-  --color-bg-alt: #111113;
-  --color-bg-elevated: #1a1a1d;
+  /* Base - deep navy WOPR terminal */
+  --color-bg: #0a0f1a;
+  --color-bg-alt: #0d1220;
+  --color-bg-elevated: #121828;
 
-  /* Text hierarchy */
-  --color-text: #e8e8e8;
-  --color-text-muted: #888888;
-  --color-text-dim: #555555;
+  /* Text hierarchy - pale blue/cyan WarGames style */
+  --color-text: #c8dce8;
+  --color-text-muted: #7a9aaa;
+  --color-text-dim: #4a6070;
 
-  /* Accent - phosphor green (ties to Conway cells) */
-  --color-accent: #39ff14;
-  --color-accent-dim: rgba(57, 255, 20, 0.3);
-  --color-accent-glow: rgba(57, 255, 20, 0.15);
+  /* Accent - WOPR pale blue */
+  --color-accent: #b8d4e8;
+  --color-accent-bright: #d4ecf8;
+  --color-accent-dim: rgba(184, 212, 232, 0.4);
+  --color-accent-glow: rgba(184, 212, 232, 0.2);
 
   /* Secondary accent */
-  --color-secondary: #ff6b35;
+  --color-secondary: #6aa8c8;
 
   /* Borders */
-  --color-border: #2a2a2d;
-  --color-border-bright: #3a3a3d;
+  --color-border: #1a2535;
+  --color-border-bright: #2a3545;
 
-  /* Typography */
-  --font-display: 'Syne', system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  /* Typography - blocky 80s terminal */
+  --font-display: 'VT323', monospace;
+  --font-mono: 'VT323', monospace;
 
   /* Spacing */
   --space-xs: 0.5rem;
@@ -54,12 +55,16 @@ html {
 body {
   font-family: var(--font-mono);
   font-weight: 400;
-  font-size: 0.9375rem;
-  line-height: 1.8;
+  font-size: 1.125rem;
+  line-height: 1.6;
   color: var(--color-text);
   background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Phosphor text glow */
+  text-shadow:
+    0 0 1px rgba(184, 212, 232, 0.5),
+    0 0 3px rgba(184, 212, 232, 0.3);
 }
 
 ::selection {
@@ -69,24 +74,29 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-shadow:
+    0 0 2px rgba(184, 212, 232, 0.6),
+    0 0 8px rgba(184, 212, 232, 0.4),
+    0 0 15px rgba(184, 212, 232, 0.2);
 }
 
 h1 {
   font-size: clamp(2.5rem, 10vw, 5rem);
-  font-weight: 800;
+  font-weight: 400;
 }
 
 h2 {
   font-size: clamp(1.5rem, 4vw, 2.5rem);
-  font-weight: 700;
+  font-weight: 400;
 }
 
 h3 {
   font-size: clamp(1.25rem, 3vw, 1.75rem);
-  font-weight: 600;
+  font-weight: 400;
 }
 
 a {
@@ -162,12 +172,15 @@ button {
   margin-left: 2px;
   animation: blink 1s step-end infinite;
   vertical-align: text-bottom;
+  box-shadow: 0 0 5px var(--color-accent), 0 0 10px var(--color-accent-dim);
 }
 
 /* Glow effect for accent elements */
 .glow {
-  text-shadow: 0 0 10px var(--color-accent-dim),
-               0 0 20px var(--color-accent-glow);
+  text-shadow:
+    0 0 5px var(--color-accent),
+    0 0 10px var(--color-accent-dim),
+    0 0 20px var(--color-accent-glow);
 }
 
 /* ============================================

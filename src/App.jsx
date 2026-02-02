@@ -116,6 +116,8 @@ function App() {
           </div>
         </footer>
       </div>
+      <div className="crt-scanlines" />
+      <div className="crt-noise" />
     </div>
   );
 }
