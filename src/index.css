@@ -1,30 +1,31 @@
 :root {
-  /* Museum palette - warm whites, soft blacks, muted accents */
-  --color-bg: #faf9f7;
-  --color-bg-alt: #f5f3f0;
-  --color-text: #1a1a1a;
-  --color-text-muted: #6b6b6b;
-  --color-text-light: #999999;
-  --color-accent: #2d2d2d;
-  --color-border: #e8e6e3;
-  --color-hover: #f0eeeb;
+  /* Base - dark terminal */
+  --color-bg: #0a0a0b;
+  --color-bg-alt: #111113;
+  --color-bg-elevated: #1a1a1d;
 
-  /* MSCHF-inspired chaos colors */
-  --color-pop: #FF4444;           /* Attention-grabbing red */
-  --color-electric: #00FF88;      /* Neon green for highlights */
-  --color-weird: #9B59B6;         /* Unexpected purple */
-  --color-chaos-yellow: #FFE135;  /* Chaotic yellow */
-  --color-chaos-blue: #0066FF;    /* Bold blue */
+  /* Text hierarchy */
+  --color-text: #e8e8e8;
+  --color-text-muted: #888888;
+  --color-text-dim: #555555;
 
-  /* Cool accent for Conway cells - creates tension against warm bg */
-  --color-cool-accent: rgba(100, 140, 160, 0.2);
+  /* Accent - phosphor green (ties to Conway cells) */
+  --color-accent: #39ff14;
+  --color-accent-dim: rgba(57, 255, 20, 0.3);
+  --color-accent-glow: rgba(57, 255, 20, 0.15);
+
+  /* Secondary accent */
+  --color-secondary: #ff6b35;
+
+  /* Borders */
+  --color-border: #2a2a2d;
+  --color-border-bright: #3a3a3d;
 
   /* Typography */
-  --font-serif: 'Cormorant Garamond', Georgia, serif;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Syne', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 
-  /* Spacing - generous, gallery-like */
+  /* Spacing */
   --space-xs: 0.5rem;
   --space-sm: 1rem;
   --space-md: 2rem;
@@ -35,10 +36,6 @@
   /* Layout */
   --max-width: 1400px;
   --content-width: 720px;
-
-  /* Chaos variables */
-  --chaos-timing: cubic-bezier(0.68, -0.55, 0.265, 1.55);
-  --hover-scale: 1.05;
 }
 
 *,
@@ -55,10 +52,10 @@ html {
 }
 
 body {
-  font-family: var(--font-sans);
-  font-weight: 300;
-  font-size: 1rem;
-  line-height: 1.7;
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.9375rem;
+  line-height: 1.8;
   color: var(--color-text);
   background-color: var(--color-bg);
   -webkit-font-smoothing: antialiased;
@@ -66,53 +63,40 @@ body {
 }
 
 ::selection {
-  background-color: var(--color-pop);
-  color: var(--color-bg);
-}
-
-/* Per-section selection colors (can be overridden) */
-.section-electric::selection,
-.section-electric *::selection {
-  background-color: var(--color-electric);
-  color: var(--color-text);
-}
-
-.section-weird::selection,
-.section-weird *::selection {
-  background-color: var(--color-weird);
+  background-color: var(--color-accent);
   color: var(--color-bg);
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-serif);
-  font-weight: 600;
+  font-family: var(--font-display);
+  font-weight: 700;
   line-height: 1.1;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
 }
 
 h1 {
-  font-size: clamp(3rem, 12vw, 7rem);
-  font-weight: 700;
+  font-size: clamp(2.5rem, 10vw, 5rem);
+  font-weight: 800;
 }
 
 h2 {
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 600;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-weight: 700;
 }
 
 h3 {
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
   font-weight: 600;
 }
 
 a {
   color: inherit;
   text-decoration: none;
-  transition: opacity 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 a:hover {
-  opacity: 0.6;
+  color: var(--color-accent);
 }
 
 img {
@@ -134,6 +118,7 @@ button {
   color: inherit;
 }
 
+/* Page load animations */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -145,10 +130,10 @@ button {
   }
 }
 
-@keyframes fadeInUp {
+@keyframes terminalReveal {
   from {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -156,107 +141,33 @@ button {
   }
 }
 
-/* MSCHF-inspired chaos animations */
-@keyframes glitch {
-  0%, 100% {
-    transform: translate(0);
-  }
-  20% {
-    transform: translate(-2px, 2px);
-  }
-  40% {
-    transform: translate(2px, -2px);
-  }
-  60% {
-    transform: translate(-2px, -2px);
-  }
-  80% {
-    transform: translate(2px, 2px);
-  }
+/* Staggered reveal classes */
+.reveal-1 { animation: terminalReveal 0.5s ease forwards; animation-delay: 0ms; opacity: 0; }
+.reveal-2 { animation: terminalReveal 0.5s ease forwards; animation-delay: 100ms; opacity: 0; }
+.reveal-3 { animation: terminalReveal 0.5s ease forwards; animation-delay: 200ms; opacity: 0; }
+.reveal-4 { animation: terminalReveal 0.5s ease forwards; animation-delay: 300ms; opacity: 0; }
+.reveal-5 { animation: terminalReveal 0.5s ease forwards; animation-delay: 400ms; opacity: 0; }
+
+/* Blinking cursor animation */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
 }
 
-@keyframes colorCycle {
-  0%, 100% {
-    color: var(--color-text);
-  }
-  25% {
-    color: var(--color-pop);
-  }
-  50% {
-    color: var(--color-electric);
-  }
-  75% {
-    color: var(--color-weird);
-  }
+.cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1.2em;
+  background-color: var(--color-accent);
+  margin-left: 2px;
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
 }
 
-@keyframes breathe {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.02);
-  }
-}
-
-@keyframes shake {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  10%, 30%, 50%, 70%, 90% {
-    transform: translateX(-2px);
-  }
-  20%, 40%, 60%, 80% {
-    transform: translateX(2px);
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-/* Utility classes for chaos */
-.glitch:hover {
-  animation: glitch 0.3s ease infinite;
-}
-
-.color-cycle:hover {
-  animation: colorCycle 2s ease infinite;
-}
-
-.breathe {
-  animation: breathe 3s ease-in-out infinite;
-}
-
-/* Bold text utility */
-.text-bold {
-  font-weight: 700;
-}
-
-.text-chaos {
-  font-weight: 900;
-  letter-spacing: -0.05em;
-}
-
-/* Hover effects */
-.hover-pop:hover {
-  color: var(--color-pop);
-  transform: scale(var(--hover-scale));
-  transition: all 0.2s var(--chaos-timing);
-}
-
-.hover-electric:hover {
-  color: var(--color-electric);
-  text-shadow: 0 0 10px var(--color-electric);
-}
-
-.hover-weird:hover {
-  color: var(--color-weird);
+/* Glow effect for accent elements */
+.glow {
+  text-shadow: 0 0 10px var(--color-accent-dim),
+               0 0 20px var(--color-accent-glow);
 }
 
 /* ============================================
@@ -265,33 +176,21 @@ button {
 
 @media (max-width: 768px) {
   :root {
-    /* Reduce spacing on mobile */
     --space-lg: 2rem;
     --space-xl: 4rem;
     --space-2xl: 6rem;
   }
 
   h1 {
-    font-size: clamp(2rem, 10vw, 3.5rem);
+    font-size: clamp(2rem, 10vw, 3rem);
   }
 
   h2 {
-    font-size: clamp(1.5rem, 6vw, 2rem);
+    font-size: clamp(1.25rem, 5vw, 1.75rem);
   }
 
   h3 {
-    font-size: clamp(1.25rem, 4vw, 1.5rem);
-  }
-
-  /* Disable hover effects on mobile */
-  .glitch:hover,
-  .color-cycle:hover,
-  .hover-pop:hover,
-  .hover-electric:hover,
-  .hover-weird:hover {
-    animation: none;
-    transform: none;
-    text-shadow: none;
+    font-size: clamp(1rem, 4vw, 1.25rem);
   }
 }
 

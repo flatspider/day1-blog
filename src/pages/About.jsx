@@ -1,4 +1,4 @@
-import './About.css'
+import "./About.css";
 
 function About() {
   return (
@@ -6,7 +6,7 @@ function About() {
       <section className="about-hero">
         <div className="about-hero-content">
           <p className="page-label">About</p>
-          <h1>Hello, I'm Your Name</h1>
+          <h1>Hello, I'm Conor</h1>
         </div>
       </section>
 
@@ -20,15 +20,15 @@ function About() {
 
           <div className="about-text">
             <p className="about-intro">
-              I'm a developer and designer passionate about creating
-              digital experiences that feel both beautiful and intuitive.
+              I'm a developer and designer passionate about creating digital
+              experiences that feel both beautiful and intuitive.
             </p>
 
             <p>
               Currently, I'm a student at Fractal Tech Bootcamp, where I'm
               deepening my skills in full-stack development and design thinking.
-              I believe that the best digital products emerge from the intersection
-              of technical precision and creative vision.
+              I believe that the best digital products emerge from the
+              intersection of technical precision and creative vision.
             </p>
 
             <p>
@@ -92,26 +92,42 @@ function About() {
         <div className="connect-content">
           <h2>Let's Connect</h2>
           <p>
-            I'm always interested in hearing about new projects and opportunities.
+            I'm always interested in hearing about new projects and
+            opportunities.
           </p>
           <div className="connect-links">
             <a href="mailto:hello@example.com" className="connect-link">
               Email
             </a>
-            <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="connect-link">
+            <a
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="connect-link"
+            >
               GitHub
             </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="connect-link">
+            <a
+              href="https://linkedin.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="connect-link"
+            >
               LinkedIn
             </a>
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="connect-link">
+            <a
+              href="https://twitter.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="connect-link"
+            >
               Twitter
             </a>
           </div>
         </div>
       </section>
     </div>
-  )
+  );
 }
 
-export default About
+export default About;

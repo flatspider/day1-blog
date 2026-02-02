@@ -30,14 +30,14 @@
 
 .about-placeholder {
   aspect-ratio: 3/4;
-  background: var(--color-bg-alt);
+  background: var(--color-bg-elevated);
+  border: 1px solid var(--color-border);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  font-style: italic;
-  color: var(--color-text-light);
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  color: var(--color-text-dim);
 }
 
 .about-text {
@@ -45,16 +45,19 @@
 }
 
 .about-intro {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: clamp(1.25rem, 2.5vw, 1.5rem);
-  font-weight: 300;
+  font-weight: 500;
   line-height: 1.6;
   margin-bottom: var(--space-md);
 }
 
 .about-text p {
+  font-family: var(--font-mono);
   margin-bottom: var(--space-md);
   color: var(--color-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.8;
 }
 
 .about-text p:last-child {
@@ -64,6 +67,7 @@
 /* Skills Section */
 .skills {
   background: var(--color-bg-alt);
+  border-top: 1px solid var(--color-border);
 }
 
 .skills-content {
@@ -78,9 +82,9 @@
 }
 
 .skill-category h3 {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: 1.25rem;
-  font-weight: 400;
+  font-weight: 600;
   margin-bottom: var(--space-md);
   padding-bottom: var(--space-sm);
   border-bottom: 1px solid var(--color-border);
@@ -93,13 +97,15 @@
 }
 
 .skill-category li {
-  font-size: 0.9375rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
   color: var(--color-text-muted);
 }
 
 /* Connect Section */
 .connect {
   text-align: center;
+  border-top: 1px solid var(--color-border);
 }
 
 .connect-content {
@@ -108,15 +114,17 @@
 }
 
 .connect h2 {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: clamp(1.5rem, 3vw, 2rem);
-  font-weight: 300;
+  font-weight: 600;
   margin-bottom: var(--space-sm);
 }
 
 .connect p {
+  font-family: var(--font-mono);
   color: var(--color-text-muted);
   margin-bottom: var(--space-md);
+  font-size: 0.875rem;
 }
 
 .connect-links {
@@ -126,9 +134,11 @@
 }
 
 .connect-link {
-  font-size: 0.875rem;
-  letter-spacing: 0.05em;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
   position: relative;
+  transition: color 0.2s ease;
 }
 
 .connect-link::after {
@@ -138,8 +148,8 @@
   left: 0;
   width: 0;
   height: 1px;
-  background: var(--color-text);
-  transition: width 0.3s ease;
+  background: var(--color-accent);
+  transition: width 0.2s ease;
 }
 
 .connect-link:hover::after {
@@ -147,7 +157,7 @@
 }
 
 .connect-link:hover {
-  opacity: 1;
+  color: var(--color-accent);
 }
 
 /* Responsive */
@@ -177,7 +187,7 @@
   }
 
   .about-text p {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
   }
 
   .skills-grid {
@@ -190,7 +200,7 @@
   }
 
   .skill-category li {
-    font-size: 0.875rem;
+    font-size: 0.8rem;
   }
 
   .connect h2 {
@@ -203,7 +213,7 @@
   }
 
   .connect-link {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 }
 
@@ -213,6 +223,6 @@
   }
 
   .about-placeholder {
-    font-size: 1.25rem;
+    font-size: 0.875rem;
   }
 }

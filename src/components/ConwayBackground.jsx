@@ -166,8 +166,8 @@ export default function ConwayBackground() {
             Math.pow(cellCenterX - mouseX, 2) + Math.pow(cellCenterY - mouseY, 2)
           )
 
-          // Base opacity from interpolated state
-          let opacity = opacityGrid[i][j] * 0.2
+          // Base opacity from interpolated state (slightly higher for dark background)
+          let opacity = opacityGrid[i][j] * 0.25
 
           // Intensify cells near cursor
           if (distance < proximityRadius) {
@@ -178,10 +178,10 @@ export default function ConwayBackground() {
           // Check if this cell is highlighted
           const isHighlighted = highlightSet.has(`${i},${j}`)
 
-          // Draw the cell
+          // Draw the cell - phosphor green
           ctx.fillStyle = isHighlighted && isPaused
-            ? `rgba(26, 26, 26, ${Math.max(opacity, 0.6)})`
-            : `rgba(100, 140, 160, ${opacity})`
+            ? `rgba(57, 255, 20, ${Math.max(opacity, 0.8)})`
+            : `rgba(57, 255, 20, ${opacity})`
 
           ctx.beginPath()
           ctx.arc(
@@ -193,9 +193,9 @@ export default function ConwayBackground() {
           )
           ctx.fill()
 
-          // Draw black outline for highlighted cells
+          // Draw green outline for highlighted cells
           if (isHighlighted && isPaused) {
-            ctx.strokeStyle = '#1a1a1a'
+            ctx.strokeStyle = '#39ff14'
             ctx.lineWidth = 2
             ctx.beginPath()
             ctx.arc(

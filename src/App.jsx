@@ -1,5 +1,5 @@
 import { Routes, Route, NavLink } from 'react-router-dom'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import './App.css'
 import Home from './pages/Home'
 import Work from './pages/Work'
@@ -8,13 +8,10 @@ import About from './pages/About'
 import ConwayBackground from './components/ConwayBackground'
 
 const FOOTER_MESSAGES = [
-  "Made with questionable decisions",
-  "No pixels were harmed in the making of this website",
-  "Powered by caffeine and spite",
-  "Built different (literally, the code is weird)",
-  "© 20XX - Time is a construct",
-  "Certified 100% human-made (probably)",
   "Running on vibes and CSS",
+  "Made with questionable decisions",
+  "Powered by caffeine and spite",
+  "Certified 100% human-made (probably)",
   "This footer serves no purpose"
 ]
 
@@ -22,41 +19,19 @@ function App() {
   const [footerMessage, setFooterMessage] = useState(FOOTER_MESSAGES[0])
   const [clickCount, setClickCount] = useState(0)
 
-  // Easter egg: click footer text to cycle messages
   const handleFooterClick = () => {
     const newCount = clickCount + 1
     setClickCount(newCount)
     setFooterMessage(FOOTER_MESSAGES[newCount % FOOTER_MESSAGES.length])
   }
 
-  // Secret: Konami code easter egg
-  useEffect(() => {
-    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a']
-    let konamiIndex = 0
-
-    const handleKeyDown = (e) => {
-      if (e.key === konamiCode[konamiIndex]) {
-        konamiIndex++
-        if (konamiIndex === konamiCode.length) {
-          document.body.classList.add('chaos-mode')
-          setTimeout(() => document.body.classList.remove('chaos-mode'), 5000)
-          konamiIndex = 0
-        }
-      } else {
-        konamiIndex = 0
-      }
-    }
-
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
   return (
     <div className="app">
       <ConwayBackground />
       <header className="header">
         <nav className="nav">
           <NavLink to="/" className="nav-logo">
-            Portfolio
+            ~/portfolio
           </NavLink>
           <div className="nav-links">
             <NavLink
@@ -64,25 +39,25 @@ function App() {
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
               end
             >
-              Home
+              /home
             </NavLink>
             <NavLink
               to="/work"
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
             >
-              Work
+              /work
             </NavLink>
             <NavLink
               to="/writing"
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
             >
-              Writing
+              /writing
             </NavLink>
             <NavLink
               to="/about"
               className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
             >
-              About
+              /about
             </NavLink>
           </div>
         </nav>

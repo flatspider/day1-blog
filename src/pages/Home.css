@@ -1,60 +1,43 @@
-/* Hero Section */
+/* Hero Section - Left aligned, terminal style */
 .hero {
   min-height: calc(100vh - var(--space-xl));
   display: flex;
   align-items: center;
-  justify-content: center;
   padding: var(--space-xl) var(--space-md);
   position: relative;
-  overflow: hidden;
 }
 
 .hero-content {
-  text-align: center;
-  animation: fadeIn 1s ease forwards;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  width: 100%;
   position: relative;
   z-index: 1;
 }
 
 .hero-greeting {
-  font-size: 1rem;
-  letter-spacing: 0.2em;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: var(--color-accent);
   margin-bottom: var(--space-sm);
-  font-weight: 500;
 }
 
 .hero-name {
   margin-bottom: var(--space-md);
-  font-weight: 900;
-  letter-spacing: -0.05em;
-  line-height: 0.9;
-  transition: transform 0.15s ease-out;
-  display: inline-block;
-}
-
-/* Massive name on hover - subtle scale */
-.hero-name:hover {
-  animation: breathe 2s ease-in-out infinite;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1;
 }
 
 .hero-tagline {
-  font-family: var(--font-sans);
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-  font-weight: 400;
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 2vw, 1.25rem);
   color: var(--color-text-muted);
   line-height: 1.6;
   margin-bottom: var(--space-lg);
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.hero-tagline.glitching {
-  animation: glitch 0.2s ease;
-  color: var(--color-pop);
+  max-width: 600px;
 }
 
 .hero-cta {
@@ -65,13 +48,13 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-xs);
-  font-size: 0.9rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  font-weight: 500;
   padding: var(--space-sm) var(--space-md);
-  border: 2px solid var(--color-text);
-  transition: all 0.3s var(--chaos-timing, ease);
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  transition: all 0.2s ease;
   position: relative;
   overflow: hidden;
 }
@@ -80,17 +63,14 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: var(--color-text);
+  background: var(--color-accent);
   transform: translateX(-100%);
-  transition: transform 0.3s var(--chaos-timing, ease);
+  transition: transform 0.2s ease;
   z-index: -1;
 }
 
 .cta-link:hover {
   color: var(--color-bg);
-  opacity: 1;
-  transform: scale(1.05);
-  box-shadow: 4px 4px 0 var(--color-pop);
 }
 
 .cta-link:hover::before {
@@ -98,39 +78,11 @@
 }
 
 .cta-arrow {
-  transition: transform 0.3s var(--chaos-timing, ease);
+  transition: transform 0.2s ease;
 }
 
 .cta-link:hover .cta-arrow {
-  transform: translateX(8px);
-}
-
-/* Animation from index.css */
-@keyframes breathe {
-  0%, 100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.02);
-  }
-}
-
-@keyframes glitch {
-  0%, 100% {
-    transform: translate(0);
-  }
-  20% {
-    transform: translate(-2px, 2px);
-  }
-  40% {
-    transform: translate(2px, -2px);
-  }
-  60% {
-    transform: translate(-2px, -2px);
-  }
-  80% {
-    transform: translate(2px, 2px);
-  }
+  transform: translateX(4px);
 }
 
 /* Featured Section */
@@ -144,37 +96,20 @@
 
 .featured-item {
   cursor: pointer;
-  transition: transform 0.4s var(--chaos-timing, ease);
+  transition: transform 0.3s ease;
   position: relative;
 }
 
 .featured-item:hover {
-  transform: translateY(-12px) scale(1.02);
-}
-
-/* Add colorful shadow on hover */
-.featured-item::after {
-  content: '';
-  position: absolute;
-  bottom: -10px;
-  left: 10%;
-  right: 10%;
-  height: 20px;
-  background: var(--color-pop);
-  opacity: 0;
-  filter: blur(20px);
-  transition: opacity 0.4s ease;
-  z-index: -1;
-}
-
-.featured-item:hover::after {
-  opacity: 0.3;
+  transform: translateY(-8px);
 }
 
 .featured-image {
   aspect-ratio: 4/3;
   overflow: hidden;
   margin-bottom: var(--space-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-elevated);
 }
 
 .placeholder-image {
@@ -183,25 +118,35 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-serif);
-  font-size: 3rem;
-  color: var(--color-text-light);
-  transition: transform 0.6s ease;
+  transition: background 0.3s ease;
 }
 
 .featured-item:hover .placeholder-image {
-  transform: scale(1.05);
+  background: var(--color-bg-alt);
+}
+
+.project-number {
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--color-text-dim);
+  transition: color 0.3s ease;
+}
+
+.featured-item:hover .project-number {
+  color: var(--color-accent);
 }
 
 .featured-info h3 {
-  font-family: var(--font-serif);
+  font-family: var(--font-display);
   font-size: 1.25rem;
-  font-weight: 400;
+  font-weight: 600;
   margin-bottom: var(--space-xs);
 }
 
 .featured-info p {
-  font-size: 0.875rem;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
   color: var(--color-text-muted);
 }
 
@@ -214,20 +159,21 @@
   display: inline-flex;
   align-items: center;
   gap: var(--space-xs);
-  font-size: 0.875rem;
-  letter-spacing: 0.05em;
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
   color: var(--color-text-muted);
-  transition: color 0.3s ease;
+  transition: color 0.2s ease;
 }
 
 .view-all:hover {
-  color: var(--color-text);
-  opacity: 1;
+  color: var(--color-accent);
 }
 
 /* Intro Section */
 .intro {
   background: var(--color-bg-alt);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .intro-content {
@@ -237,36 +183,26 @@
 }
 
 .intro-text {
-  font-family: var(--font-serif);
-  font-size: clamp(1.5rem, 4vw, 2rem);
-  font-weight: 400;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 3vw, 1.75rem);
+  font-weight: 500;
   line-height: 1.6;
   margin-bottom: var(--space-md);
 }
 
 .intro-text .text-emphasis {
-  font-weight: 700;
-  font-style: italic;
-  color: var(--color-weird);
-  transition: color 0.3s ease;
-}
-
-.intro-text .text-emphasis:hover {
-  color: var(--color-pop);
+  color: var(--color-accent);
 }
 
 .intro-link {
+  font-family: var(--font-mono);
   font-size: 0.875rem;
-  font-weight: 500;
-  letter-spacing: 0.05em;
   color: var(--color-text-muted);
-  transition: all 0.3s ease;
+  transition: color 0.2s ease;
 }
 
 .intro-link:hover {
-  color: var(--color-pop);
-  opacity: 1;
-  letter-spacing: 0.08em;
+  color: var(--color-accent);
 }
 
 /* ============================================
@@ -274,7 +210,6 @@
    ============================================ */
 
 @media (max-width: 768px) {
-  /* Hero Section */
   .hero {
     min-height: calc(100vh - 120px);
     padding: var(--space-lg) var(--space-sm);
@@ -286,26 +221,17 @@
   }
 
   .hero-greeting {
-    font-size: 0.8rem;
-    letter-spacing: 0.15em;
+    font-size: 0.75rem;
     margin-bottom: var(--space-xs);
   }
 
   .hero-name {
-    font-size: clamp(2rem, 12vw, 3.5rem);
-    letter-spacing: -0.03em;
     margin-bottom: var(--space-sm);
   }
 
-  .hero-name:hover {
-    animation: none;
-  }
-
   .hero-tagline {
-    font-size: 0.95rem;
-    line-height: 1.5;
+    font-size: 0.9rem;
     margin-bottom: var(--space-md);
-    padding: 0 var(--space-xs);
   }
 
   .hero-cta {
@@ -317,40 +243,22 @@
     padding: 0.75rem 1.25rem;
   }
 
-  .cta-link:hover {
-    transform: none;
-    box-shadow: 2px 2px 0 var(--color-pop);
-  }
-
-  /* Featured Section */
   .featured-grid {
     grid-template-columns: 1fr;
     gap: var(--space-md);
     padding: 0 var(--space-xs);
   }
 
-  .featured-item {
-    margin-bottom: var(--space-sm);
-  }
-
   .featured-item:hover {
     transform: none;
-  }
-
-  .featured-item::after {
-    display: none;
   }
 
   .featured-image {
     margin-bottom: var(--space-sm);
   }
 
-  .placeholder-image {
+  .project-number {
     font-size: 2rem;
-  }
-
-  .featured-item:hover .placeholder-image {
-    transform: none;
   }
 
   .featured-info h3 {
@@ -358,7 +266,7 @@
   }
 
   .featured-info p {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 
   .section-footer {
@@ -366,29 +274,19 @@
   }
 
   .view-all {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
   }
 
-  /* Intro Section */
   .intro-content {
     padding: 0 var(--space-xs);
   }
 
   .intro-text {
-    font-size: clamp(1.2rem, 5vw, 1.5rem);
-    line-height: 1.5;
-  }
-
-  .intro-text .text-emphasis:hover {
-    color: var(--color-weird);
+    font-size: 1.1rem;
   }
 
   .intro-link {
     font-size: 0.8rem;
-  }
-
-  .intro-link:hover {
-    letter-spacing: 0.05em;
   }
 }
 
@@ -399,10 +297,6 @@
 
   .hero-greeting {
     font-size: 0.7rem;
-  }
-
-  .hero-name {
-    font-size: clamp(1.75rem, 14vw, 2.5rem);
   }
 
   .hero-tagline {
@@ -419,6 +313,6 @@
   }
 
   .intro-text {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 }
