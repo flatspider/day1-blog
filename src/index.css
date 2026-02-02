@@ -1,0 +1,126 @@
+:root {
+  /* Museum palette - warm whites, soft blacks, muted accents */
+  --color-bg: #faf9f7;
+  --color-bg-alt: #f5f3f0;
+  --color-text: #1a1a1a;
+  --color-text-muted: #6b6b6b;
+  --color-text-light: #999999;
+  --color-accent: #2d2d2d;
+  --color-border: #e8e6e3;
+  --color-hover: #f0eeeb;
+
+  /* Typography */
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Spacing - generous, gallery-like */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 2rem;
+  --space-lg: 4rem;
+  --space-xl: 8rem;
+  --space-2xl: 12rem;
+
+  /* Layout */
+  --max-width: 1400px;
+  --content-width: 720px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: var(--color-text);
+  color: var(--color-bg);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+h1 {
+  font-size: clamp(2.5rem, 8vw, 5rem);
+}
+
+h2 {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+}
+
+h3 {
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.6;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+ul, ol {
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
