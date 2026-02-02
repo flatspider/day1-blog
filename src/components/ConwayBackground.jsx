@@ -1,10 +1,20 @@
 import { useRef, useEffect, useCallback, useState } from 'react'
 import './ConwayBackground.css'
+import ConwayTooltip from './ConwayTooltip'
+import { detectPattern } from './PatternDetector'
 
 const CELL_SIZE = 25
 const TICK_INTERVAL = 250
 const INITIAL_DENSITY = 0.15
 const STABLE_CHECK_GENERATIONS = 3
+
+// Test mode: show restart button after 5 seconds regardless of stability
+const TEST_MODE = import.meta.env.DEV && false // Set to true to enable test mode
+
+// Check if device is touch-only (mobile)
+const isTouchDevice = () => {
+  return 'ontouchstart' in window || navigator.maxTouchPoints > 0
+}
 
 export default function ConwayBackground() {
   const canvasRef = useRef(null)
@@ -17,8 +27,18 @@ export default function ConwayBackground() {
   const mouseRef = useRef({ x: -1000, y: -1000 })
   const scrollOffsetRef = useRef(0)
   const historyRef = useRef([])
+  const isPausedRef = useRef(false)
+  const highlightedCellsRef = useRef([])
 
   const [isStable, setIsStable] = useState(false)
+  const [showTestButton, setShowTestButton] = useState(false)
+  const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, pattern: null })
+  const [isMobile, setIsMobile] = useState(false)
+
+  // Check for mobile on mount
+  useEffect(() => {
+    setIsMobile(isTouchDevice())
+  }, [])
 
   const getGridDimensions = useCallback(() => {
     const cols = Math.ceil(window.innerWidth / CELL_SIZE) + 2
@@ -126,6 +146,13 @@ export default function ConwayBackground() {
     const mouseX = mouseRef.current.x
     const mouseY = mouseRef.current.y
     const proximityRadius = 150
+    const highlightedCells = highlightedCellsRef.current
+    const isPaused = isPausedRef.current
+
+    // Create a set for fast lookup of highlighted cells
+    const highlightSet = new Set(
+      highlightedCells.map(c => `${c.row},${c.col}`)
+    )
 
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
@@ -148,7 +175,14 @@ export default function ConwayBackground() {
             opacity = Math.min(0.4, opacity + proximityFactor * 0.15 * opacityGrid[i][j])
           }
 
-          ctx.fillStyle = `rgba(100, 140, 160, ${opacity})`
+          // Check if this cell is highlighted
+          const isHighlighted = highlightSet.has(`${i},${j}`)
+
+          // Draw the cell
+          ctx.fillStyle = isHighlighted && isPaused
+            ? `rgba(26, 26, 26, ${Math.max(opacity, 0.6)})`
+            : `rgba(100, 140, 160, ${opacity})`
+
           ctx.beginPath()
           ctx.arc(
             x + CELL_SIZE / 2,
@@ -158,6 +192,21 @@ export default function ConwayBackground() {
             Math.PI * 2
           )
           ctx.fill()
+
+          // Draw black outline for highlighted cells
+          if (isHighlighted && isPaused) {
+            ctx.strokeStyle = '#1a1a1a'
+            ctx.lineWidth = 2
+            ctx.beginPath()
+            ctx.arc(
+              x + CELL_SIZE / 2,
+              y + CELL_SIZE / 2,
+              CELL_SIZE / 3 + 3,
+              0,
+              Math.PI * 2
+            )
+            ctx.stroke()
+          }
         }
       }
     }
@@ -208,8 +257,8 @@ export default function ConwayBackground() {
     const ctx = canvas.getContext('2d')
     const { cols, rows } = getGridDimensions()
 
-    // Update game state at tick interval
-    if (timestamp - lastTickRef.current > TICK_INTERVAL && !isStable) {
+    // Update game state at tick interval (only if not paused)
+    if (timestamp - lastTickRef.current > TICK_INTERVAL && !isStable && !isPausedRef.current) {
       // Store current state in history
       const currentState = gridToString(gridRef.current)
       historyRef.current.push(currentState)
@@ -234,6 +283,63 @@ export default function ConwayBackground() {
     draw(ctx, opacityGridRef.current, rows, cols)
     animationRef.current = requestAnimationFrame(animate)
   }, [getGridDimensions, nextGeneration, updateTargetOpacities, interpolateOpacities, draw, gridToString, checkStability, isStable])
+
+  // Test mode timer
+  useEffect(() => {
+    if (TEST_MODE) {
+      const timer = setTimeout(() => {
+        setShowTestButton(true)
+      }, 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [])
+
+  // Handle hover for pattern detection - PAUSES THE GAME
+  const handleCanvasHover = useCallback((e) => {
+    // Skip pattern detection on mobile
+    if (isMobile) return
+
+    const canvas = canvasRef.current
+    if (!canvas || !gridRef.current) return
+
+    const rect = canvas.getBoundingClientRect()
+    const x = e.clientX - rect.left
+    const y = e.clientY - rect.top
+    const parallaxOffset = scrollOffsetRef.current * 0.1
+
+    // Convert to grid coordinates
+    const gridCol = Math.floor(x / CELL_SIZE)
+    const gridRow = Math.floor((y - parallaxOffset) / CELL_SIZE)
+
+    const { cols, rows } = getGridDimensions()
+
+    if (gridRow >= 0 && gridRow < rows && gridCol >= 0 && gridCol < cols) {
+      const pattern = detectPattern(gridRef.current, gridRow, gridCol, rows, cols)
+      if (pattern) {
+        // Pause the game and show tooltip
+        isPausedRef.current = true
+        highlightedCellsRef.current = pattern.cells || []
+        setTooltip({
+          visible: true,
+          x: e.clientX,
+          y: e.clientY,
+          pattern
+        })
+      } else {
+        // No pattern, unpause
+        isPausedRef.current = false
+        highlightedCellsRef.current = []
+        setTooltip(prev => prev.visible ? { ...prev, visible: false } : prev)
+      }
+    }
+  }, [getGridDimensions, isMobile])
+
+  const handleCanvasLeave = useCallback(() => {
+    // Resume the game when mouse leaves
+    isPausedRef.current = false
+    highlightedCellsRef.current = []
+    setTooltip(prev => ({ ...prev, visible: false }))
+  }, [])
 
   useEffect(() => {
     init()
@@ -272,14 +378,32 @@ export default function ConwayBackground() {
     }
   }, [init, animate])
 
+  const showButton = isStable || (TEST_MODE && showTestButton)
+
   return (
     <>
+      {/* Only render hover layer on desktop */}
+      {!isMobile && (
+        <div
+          className="conway-hover-layer"
+          onMouseMove={handleCanvasHover}
+          onMouseLeave={handleCanvasLeave}
+        />
+      )}
       <canvas
         ref={canvasRef}
         className="conway-background"
         aria-hidden="true"
       />
-      {isStable && (
+      {!isMobile && (
+        <ConwayTooltip
+          visible={tooltip.visible}
+          x={tooltip.x}
+          y={tooltip.y}
+          pattern={tooltip.pattern}
+        />
+      )}
+      {showButton && (
         <button
           className="conway-restart-button"
           onClick={restart}

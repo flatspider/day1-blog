@@ -26,9 +26,15 @@
 
 .nav-logo {
   font-family: var(--font-serif);
-  font-size: 1.25rem;
-  font-weight: 400;
-  letter-spacing: 0.02em;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  transition: all 0.3s var(--chaos-timing, ease);
+}
+
+.nav-logo:hover {
+  transform: scale(1.1) rotate(-2deg);
+  color: var(--color-pop);
 }
 
 .nav-links {
@@ -38,9 +44,11 @@
 
 .nav-link {
   font-size: 0.875rem;
+  font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   position: relative;
+  transition: all 0.3s var(--chaos-timing, ease);
 }
 
 .nav-link::after {
@@ -49,9 +57,9 @@
   bottom: -4px;
   left: 0;
   width: 0;
-  height: 1px;
-  background: var(--color-text);
-  transition: width 0.3s ease;
+  height: 2px;
+  background: var(--color-pop);
+  transition: width 0.3s var(--chaos-timing, ease);
 }
 
 .nav-link:hover::after,
@@ -61,6 +69,41 @@
 
 .nav-link:hover {
   opacity: 1;
+  transform: scale(1.1);
+  color: var(--color-pop);
+}
+
+.nav-link.active {
+  font-weight: 700;
+}
+
+/* Different colors for each nav link on hover */
+.nav-link:nth-child(1):hover {
+  color: var(--color-pop);
+}
+.nav-link:nth-child(1):hover::after {
+  background: var(--color-pop);
+}
+
+.nav-link:nth-child(2):hover {
+  color: var(--color-electric);
+}
+.nav-link:nth-child(2):hover::after {
+  background: var(--color-electric);
+}
+
+.nav-link:nth-child(3):hover {
+  color: var(--color-weird);
+}
+.nav-link:nth-child(3):hover::after {
+  background: var(--color-weird);
+}
+
+.nav-link:nth-child(4):hover {
+  color: var(--color-chaos-blue);
+}
+.nav-link:nth-child(4):hover::after {
+  background: var(--color-chaos-blue);
 }
 
 /* Main content */
@@ -72,6 +115,22 @@
 /* Page container */
 .page {
   animation: fadeIn 0.6s ease forwards;
+}
+
+/* Exaggerated page transitions */
+.page-entering {
+  animation: pageEnter 0.5s var(--chaos-timing, ease) forwards;
+}
+
+@keyframes pageEnter {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 /* Section styling */
@@ -115,24 +174,209 @@
   color: var(--color-text-muted);
 }
 
+.footer-message {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  user-select: none;
+}
+
+.footer-message:hover {
+  color: var(--color-weird);
+  transform: scale(1.05);
+}
+
+.footer-message:active {
+  transform: scale(0.95);
+}
+
 .footer-links {
   display: flex;
   gap: var(--space-md);
 }
 
-/* Mobile responsive */
+.footer-link {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+  color: var(--color-electric);
+  opacity: 1;
+}
+
+.footer-link::before {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--color-electric);
+  transition: width 0.3s ease;
+}
+
+.footer-link:hover::before {
+  width: 100%;
+}
+
+/* Konami Code Easter Egg - Chaos Mode */
+body.chaos-mode {
+  animation: chaosBackground 0.5s ease infinite;
+}
+
+body.chaos-mode * {
+  animation: chaosElements 0.3s ease infinite !important;
+}
+
+body.chaos-mode .nav-link {
+  animation: colorCycle 0.5s ease infinite !important;
+}
+
+@keyframes chaosBackground {
+  0%, 100% {
+    filter: hue-rotate(0deg);
+  }
+  50% {
+    filter: hue-rotate(180deg);
+  }
+}
+
+@keyframes chaosElements {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(2px, -2px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-2px, 2px) rotate(-1deg);
+  }
+  75% {
+    transform: translate(2px, 2px) rotate(1deg);
+  }
+}
+
+@keyframes colorCycle {
+  0%, 100% {
+    color: var(--color-pop);
+  }
+  33% {
+    color: var(--color-electric);
+  }
+  66% {
+    color: var(--color-weird);
+  }
+}
+
+/* ============================================
+   MOBILE RESPONSIVE STYLES
+   ============================================ */
+
 @media (max-width: 768px) {
+  /* Header */
+  .header {
+    padding: var(--space-sm);
+  }
+
+  /* Navigation */
+  .nav {
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  .nav-logo {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+  }
+
+  .nav-logo:hover {
+    transform: none;
+    color: inherit;
+  }
+
   .nav-links {
-    gap: var(--space-md);
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
   .nav-link {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
+    padding: 0.25rem 0;
+  }
+
+  /* Disable hover transforms on mobile */
+  .nav-link:hover {
+    transform: none;
+  }
+
+  /* Main content */
+  .main {
+    padding-top: var(--space-lg);
+  }
+
+  /* Sections */
+  .section {
+    padding: var(--space-lg) var(--space-sm);
+  }
+
+  .section-header {
+    margin-bottom: var(--space-md);
+  }
+
+  /* Footer */
+  .footer {
+    padding: var(--space-md) var(--space-sm);
   }
 
   .footer-content {
     flex-direction: column;
     gap: var(--space-sm);
     text-align: center;
+  }
+
+  .footer-message {
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
+  .footer-message:hover {
+    transform: none;
+  }
+
+  .footer-links {
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .footer-link {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: var(--space-xs) var(--space-sm);
+  }
+
+  .nav {
+    justify-content: center;
+  }
+
+  .nav-logo {
+    width: 100%;
+    text-align: center;
+    margin-bottom: var(--space-xs);
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: center;
+    gap: var(--space-sm);
+  }
+
+  .nav-link {
+    font-size: 0.65rem;
   }
 }

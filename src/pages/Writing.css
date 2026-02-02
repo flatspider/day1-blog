@@ -131,8 +131,47 @@
 }
 
 /* Responsive */
+@media (max-width: 768px) {
+  .writing-hero {
+    padding: var(--space-lg) var(--space-sm) var(--space-md);
+  }
+
+  .posts-section {
+    padding: 0 var(--space-sm) var(--space-lg);
+  }
+
+  .post-item {
+    padding: var(--space-md) 0;
+  }
+
+  .post-title {
+    font-size: 1.1rem;
+  }
+
+  .post-excerpt {
+    font-size: 0.9rem;
+  }
+
+  .newsletter h2 {
+    font-size: 1.25rem;
+  }
+
+  .newsletter-content {
+    padding: 0 var(--space-xs);
+  }
+}
+
 @media (max-width: 480px) {
   .newsletter-form {
     flex-direction: column;
+  }
+
+  .post-meta {
+    flex-wrap: wrap;
+  }
+
+  .newsletter-input,
+  .newsletter-button {
+    font-size: 0.8rem;
   }
 }

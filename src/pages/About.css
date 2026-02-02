@@ -152,14 +152,32 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .about-hero {
+    padding: var(--space-lg) var(--space-sm) var(--space-md);
+  }
+
+  .about-content {
+    padding: 0 var(--space-sm) var(--space-lg);
+  }
+
   .about-grid {
     grid-template-columns: 1fr;
+    gap: var(--space-md);
   }
 
   .about-image {
     position: relative;
     top: 0;
-    max-width: 300px;
+    max-width: 250px;
+    margin: 0 auto;
+  }
+
+  .about-intro {
+    font-size: 1.1rem;
+  }
+
+  .about-text p {
+    font-size: 0.9rem;
   }
 
   .skills-grid {
@@ -167,8 +185,34 @@
     gap: var(--space-md);
   }
 
+  .skill-category h3 {
+    font-size: 1.1rem;
+  }
+
+  .skill-category li {
+    font-size: 0.875rem;
+  }
+
+  .connect h2 {
+    font-size: 1.25rem;
+  }
+
   .connect-links {
     flex-wrap: wrap;
     gap: var(--space-md);
+  }
+
+  .connect-link {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-image {
+    max-width: 200px;
+  }
+
+  .about-placeholder {
+    font-size: 1.25rem;
   }
 }

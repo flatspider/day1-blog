@@ -1,3 +1,11 @@
+/* Hover detection layer */
+.conway-hover-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: auto;
+}
+
 .conway-background {
   position: fixed;
   inset: 0;
@@ -112,16 +120,40 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 640px) {
+@media (max-width: 768px) {
+  /* Hide hover layer on mobile - interactions disabled anyway */
+  .conway-hover-layer {
+    display: none;
+  }
+
   .conway-restart-button {
-    bottom: 1.5rem;
-    right: 1.5rem;
-    padding: 0.625rem 1rem;
-    font-size: 0.8125rem;
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.5rem 0.875rem;
+    font-size: 0.75rem;
+    border-radius: 1.5rem;
   }
 
   .conway-restart-icon {
     width: 1rem;
     height: 1rem;
+  }
+
+  .conway-restart-button:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .conway-restart-button {
+    bottom: 0.75rem;
+    right: 0.75rem;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.7rem;
+  }
+
+  .conway-restart-icon {
+    width: 0.875rem;
+    height: 0.875rem;
   }
 }

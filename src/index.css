@@ -9,12 +9,20 @@
   --color-border: #e8e6e3;
   --color-hover: #f0eeeb;
 
+  /* MSCHF-inspired chaos colors */
+  --color-pop: #FF4444;           /* Attention-grabbing red */
+  --color-electric: #00FF88;      /* Neon green for highlights */
+  --color-weird: #9B59B6;         /* Unexpected purple */
+  --color-chaos-yellow: #FFE135;  /* Chaotic yellow */
+  --color-chaos-blue: #0066FF;    /* Bold blue */
+
   /* Cool accent for Conway cells - creates tension against warm bg */
   --color-cool-accent: rgba(100, 140, 160, 0.2);
 
   /* Typography */
   --font-serif: 'Cormorant Garamond', Georgia, serif;
   --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 
   /* Spacing - generous, gallery-like */
   --space-xs: 0.5rem;
@@ -27,6 +35,10 @@
   /* Layout */
   --max-width: 1400px;
   --content-width: 720px;
+
+  /* Chaos variables */
+  --chaos-timing: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --hover-scale: 1.05;
 }
 
 *,
@@ -54,27 +66,43 @@ body {
 }
 
 ::selection {
-  background-color: var(--color-text);
+  background-color: var(--color-pop);
+  color: var(--color-bg);
+}
+
+/* Per-section selection colors (can be overridden) */
+.section-electric::selection,
+.section-electric *::selection {
+  background-color: var(--color-electric);
+  color: var(--color-text);
+}
+
+.section-weird::selection,
+.section-weird *::selection {
+  background-color: var(--color-weird);
   color: var(--color-bg);
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-serif);
-  font-weight: 300;
-  line-height: 1.2;
-  letter-spacing: -0.02em;
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
 }
 
 h1 {
-  font-size: clamp(2.5rem, 8vw, 5rem);
+  font-size: clamp(3rem, 12vw, 7rem);
+  font-weight: 700;
 }
 
 h2 {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
 }
 
 h3 {
-  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 600;
 }
 
 a {
@@ -125,5 +153,156 @@ button {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* MSCHF-inspired chaos animations */
+@keyframes glitch {
+  0%, 100% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(2px, -2px);
+  }
+  60% {
+    transform: translate(-2px, -2px);
+  }
+  80% {
+    transform: translate(2px, 2px);
+  }
+}
+
+@keyframes colorCycle {
+  0%, 100% {
+    color: var(--color-text);
+  }
+  25% {
+    color: var(--color-pop);
+  }
+  50% {
+    color: var(--color-electric);
+  }
+  75% {
+    color: var(--color-weird);
+  }
+}
+
+@keyframes breathe {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: translateX(-2px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+/* Utility classes for chaos */
+.glitch:hover {
+  animation: glitch 0.3s ease infinite;
+}
+
+.color-cycle:hover {
+  animation: colorCycle 2s ease infinite;
+}
+
+.breathe {
+  animation: breathe 3s ease-in-out infinite;
+}
+
+/* Bold text utility */
+.text-bold {
+  font-weight: 700;
+}
+
+.text-chaos {
+  font-weight: 900;
+  letter-spacing: -0.05em;
+}
+
+/* Hover effects */
+.hover-pop:hover {
+  color: var(--color-pop);
+  transform: scale(var(--hover-scale));
+  transition: all 0.2s var(--chaos-timing);
+}
+
+.hover-electric:hover {
+  color: var(--color-electric);
+  text-shadow: 0 0 10px var(--color-electric);
+}
+
+.hover-weird:hover {
+  color: var(--color-weird);
+}
+
+/* ============================================
+   MOBILE RESPONSIVE STYLES
+   ============================================ */
+
+@media (max-width: 768px) {
+  :root {
+    /* Reduce spacing on mobile */
+    --space-lg: 2rem;
+    --space-xl: 4rem;
+    --space-2xl: 6rem;
+  }
+
+  h1 {
+    font-size: clamp(2rem, 10vw, 3.5rem);
+  }
+
+  h2 {
+    font-size: clamp(1.5rem, 6vw, 2rem);
+  }
+
+  h3 {
+    font-size: clamp(1.25rem, 4vw, 1.5rem);
+  }
+
+  /* Disable hover effects on mobile */
+  .glitch:hover,
+  .color-cycle:hover,
+  .hover-pop:hover,
+  .hover-electric:hover,
+  .hover-weird:hover {
+    animation: none;
+    transform: none;
+    text-shadow: none;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --space-md: 1.5rem;
+    --space-lg: 1.5rem;
+    --space-xl: 3rem;
+  }
+
+  html {
+    font-size: 14px;
   }
 }
