@@ -1,5 +1,30 @@
 const posts = [
   {
+    id: 0,
+    slug: "day-one-with-claude",
+    title: "Day One with Claude",
+    excerpt:
+      "Building a portfolio site with AI assistance - the good, the frustrating, and the surprisingly fast.",
+    date: "February 2026",
+    readTime: "4 min read",
+    category: "Development",
+    body: [
+      "Claude can go absolutely crazy on some code. The raw SPEED Claude brings to the table.",
+      "So far today, the most frustrating part of using Claude has been figuring out where our chat transcripts were. I'm still not sure. Initially, Claude provided me with just the messages from their side, which does not provide much illumination on how working with Claude was. The coding was much more within Claude's domain.",
+      "My goal today was to build a fun portfolio site. Initially, I started by asking for a portfolio in the style of an art gallery. This ended up creating a blank feeling. But Claude absolutely crushed it in about 30 seconds. All of the links worked, the page navigation, the scrolling. It's amazing now what can be considered to be boilerplate code.",
+      "I didn't really like that initial design. It was too flat. I went out looking for some design prompts to help Claude think, and stumbled upon the official Claude frontend design prompt. It includes things like \"You tend to converge toward generic, 'on distribution' outputs. In frontend design, this creates what users call the 'AI slop' aesthetic.\" This helped add energy to my design.",
+      "I also knew I wanted a functional Conway's Game in the background of the site. I added that in, but the black on white was still too flat.",
+      "Working with Claude is sort of like working with a coworker who has no ideas. You have to be the one to generate and drive the conversation, using prompts and making sure you have a clear path forward, especially with regards to design.",
+      "My next design pivot was that I wanted the \"gallery\" feeling to disappear. I switched over to a computer terminal aesthetic. This ended up being far too Matrix-y. Black and green, a bit ominous for a portfolio site. I let Claude know, and provided some aesthetic examples, and Claude was off to the races.",
+      "This is when I hit my token limit for the day. It seems that as the codebase expands, Claude can spend a lot of time reading through and making changes. Especially full scale design changes. I eventually settled on a whitish and black terminal color under a CRT screen. This looked less disgusting than the green.",
+      "I upgraded to Max, and started fiddling with the CRT screen. Claude unsuccessfully resolved a tooltip bug that was occurring when hovering over a single cell in Conway's game. It was not able to adjust the code to avoid calling Math.random() over and over again.",
+      "The nicest thing about Claude is that he does not get frustrated. Or question what you are trying to achieve. He puts his head down, and gets to work. Even if there were better ways to accomplish something.",
+      "Claude also does not have a great sense of when something more fundamental is broken. When I attempted to deploy to GitHub Pages, GitHub actions were down. This was causing my builds to hang in the queue and fail. Claude kept blaming other files in my blog, when it was actually Microsoft.",
+      "I shifted over to Railway, got an assets error, and Claude identified and solved it immediately. That felt really nice.",
+      "You are currently reading this blogpost on my deployed website! Thank you, Claude!",
+    ],
+  },
+  {
     id: 1,
     slug: "design-improvements",
     title: "How to get better at Design by trying really hard",
@@ -16,19 +41,14 @@ const posts = [
   },
   {
     id: 2,
-    slug: "building-for-the-long-term",
+    slug: "building-with-claude",
     title: "Building for the Long Term",
     excerpt:
       "Thoughts on sustainable code architecture and the balance between shipping fast and building to last.",
-    date: "December 2025",
+    date: "January 2026",
     readTime: "8 min read",
     category: "Development",
-    body: [
-      "Speed and durability can feel like rivals, but they are not enemies. The real problem is confusing speed with haste.",
-      "When a project grows, the first shortcuts you take become the first constraints you feel. Naming, structure, and documentation are the quiet multipliers of future velocity.",
-      "My favorite approach is to build small things that are easy to delete. If you can remove a piece without panic, you have created a durable system.",
-      "Long-term thinking is less about predicting the future and more about keeping the present flexible. Ship with care, and leave the door open for the next version of yourself.",
-    ],
+    body: [""],
   },
   {
     id: 3,
