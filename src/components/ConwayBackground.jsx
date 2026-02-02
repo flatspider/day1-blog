@@ -358,12 +358,14 @@ export default function ConwayBackground() {
 
     const handleMouseMove = (e) => {
       mouseRef.current = { x: e.clientX, y: e.clientY }
+      handleCanvasHover(e)
     }
 
     document.addEventListener('visibilitychange', handleVisibilityChange)
     window.addEventListener('resize', handleResize)
     window.addEventListener('scroll', handleScroll)
     window.addEventListener('mousemove', handleMouseMove)
+    window.addEventListener('mouseleave', handleCanvasLeave)
 
     animationRef.current = requestAnimationFrame(animate)
 
@@ -372,24 +374,17 @@ export default function ConwayBackground() {
       window.removeEventListener('resize', handleResize)
       window.removeEventListener('scroll', handleScroll)
       window.removeEventListener('mousemove', handleMouseMove)
+      window.removeEventListener('mouseleave', handleCanvasLeave)
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current)
       }
     }
-  }, [init, animate])
+  }, [init, animate, handleCanvasHover, handleCanvasLeave])
 
   const showButton = isStable || (TEST_MODE && showTestButton)
 
   return (
     <>
-      {/* Only render hover layer on desktop */}
-      {!isMobile && (
-        <div
-          className="conway-hover-layer"
-          onMouseMove={handleCanvasHover}
-          onMouseLeave={handleCanvasLeave}
-        />
-      )}
       <canvas
         ref={canvasRef}
         className="conway-background"

@@ -4,6 +4,7 @@ import './App.css'
 import Home from './pages/Home'
 import Work from './pages/Work'
 import Writing from './pages/Writing'
+import Post from './pages/Post'
 import About from './pages/About'
 import ConwayBackground from './components/ConwayBackground'
 
@@ -68,6 +69,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/work" element={<Work />} />
           <Route path="/writing" element={<Writing />} />
+          <Route path="/writing/:slug" element={<Post />} />
           <Route path="/about" element={<About />} />
         </Routes>
       </main>
