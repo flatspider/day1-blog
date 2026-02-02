@@ -144,6 +144,9 @@ function App() {
         <div className="crt-noise" />
       </div>
 
+      {/* CRT monitor bezel frame - OUTSIDE .crt to avoid filter containment */}
+      {isHome && <div className="crt-bezel" />}
+
       {/* Control panel OUTSIDE .crt to avoid filter containment */}
       {isHome && (
         <ControlPanel
