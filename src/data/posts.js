@@ -8,7 +8,7 @@ const posts = [
     readTime: "5 min read",
     category: "Design",
     body: [
-      "Simplicity is not the absence of detail; it is the presence of clarity. When we strip away the unnecessary, we create room for the parts that matter to speak louder.",
+      "I have a lot of friends who went to design school. The main takeaway is design takes a lot of time. How do you develop taste? I don't think it is from extreme consumption. I think it is from creating ugly items. And then parsing through what makes it better. Simplicity is not the absence of detail; it is the presence of clarity. When we strip away the unnecessary, we create room for the parts that matter to speak louder.",
       "In practice, this means choosing one strong idea and supporting it with a few intentional details. It is the difference between a room full of furniture and a space arranged for a single conversation.",
       "When I design an interface, I try to remove anything that does not serve the core promise. If it does not deepen understanding, build trust, or guide action, it is probably a distraction.",
       "The surprising part is that simplicity takes time. It requires saying no to cleverness and yes to coherence. But when we do, the work feels effortless to the people who use it.",

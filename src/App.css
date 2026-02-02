@@ -13,8 +13,8 @@
   right: 0;
   z-index: 100;
   padding: var(--space-md);
-  background: var(--color-bg);
-  border-bottom: 1px solid var(--color-border);
+  background: transparent;
+  border-bottom: none;
 }
 
 .nav {
@@ -27,15 +27,22 @@
 
 .nav-logo {
   font-family: var(--font-mono);
-  font-size: 1rem;
-  font-weight: 500;
+  font-size: 1.25rem;
+  font-weight: 400;
   color: var(--color-accent);
   transition: text-shadow 0.3s ease;
+  text-shadow:
+    0 0 10px rgba(184, 212, 232, 0.6),
+    0 0 20px rgba(184, 212, 232, 0.3),
+    0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .nav-logo:hover {
-  color: var(--color-accent);
-  text-shadow: 0 0 10px var(--color-accent-dim);
+  color: var(--color-accent-bright);
+  text-shadow:
+    0 0 15px rgba(184, 212, 232, 0.8),
+    0 0 30px rgba(184, 212, 232, 0.5),
+    0 1px 3px rgba(0, 0, 0, 0.8);
 }
 
 .nav-links {
@@ -45,11 +52,12 @@
 
 .nav-link {
   font-family: var(--font-mono);
-  font-size: 0.8125rem;
+  font-size: 1.125rem;
   font-weight: 400;
   color: var(--color-text-muted);
   position: relative;
-  transition: color 0.2s ease;
+  transition: color 0.2s ease, text-shadow 0.2s ease;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.9);
 }
 
 .nav-link::after {
@@ -70,10 +78,16 @@
 
 .nav-link:hover {
   color: var(--color-accent);
+  text-shadow:
+    0 0 8px rgba(184, 212, 232, 0.5),
+    0 1px 4px rgba(0, 0, 0, 0.9);
 }
 
 .nav-link.active {
   color: var(--color-text);
+  text-shadow:
+    0 0 10px rgba(184, 212, 232, 0.4),
+    0 1px 4px rgba(0, 0, 0, 0.9);
 }
 
 /* Main content */
