@@ -1,20 +1,24 @@
-import { useRef, useEffect, useCallback } from 'react'
+import { useRef, useEffect, useCallback, useState } from 'react'
 import './ConwayBackground.css'
 
 const CELL_SIZE = 25
 const TICK_INTERVAL = 250
 const INITIAL_DENSITY = 0.15
-const FADE_STEPS = 3
+const STABLE_CHECK_GENERATIONS = 3
 
 export default function ConwayBackground() {
   const canvasRef = useRef(null)
   const gridRef = useRef(null)
-  const fadeGridRef = useRef(null)
+  const opacityGridRef = useRef(null)
+  const targetOpacityGridRef = useRef(null)
   const animationRef = useRef(null)
   const lastTickRef = useRef(0)
   const isVisibleRef = useRef(true)
   const mouseRef = useRef({ x: -1000, y: -1000 })
   const scrollOffsetRef = useRef(0)
+  const historyRef = useRef([])
+
+  const [isStable, setIsStable] = useState(false)
 
   const getGridDimensions = useCallback(() => {
     const cols = Math.ceil(window.innerWidth / CELL_SIZE) + 2
@@ -33,12 +37,12 @@ export default function ConwayBackground() {
     return grid
   }, [])
 
-  const createFadeGrid = useCallback((cols, rows) => {
+  const createOpacityGrid = useCallback((cols, rows, initialValue = 0) => {
     const grid = []
     for (let i = 0; i < rows; i++) {
       grid[i] = []
       for (let j = 0; j < cols; j++) {
-        grid[i][j] = 0
+        grid[i][j] = initialValue
       }
     }
     return grid
@@ -72,24 +76,47 @@ export default function ConwayBackground() {
     return newGrid
   }, [createGrid, countNeighbors])
 
-  const updateFadeGrid = useCallback((fadeGrid, grid, prevGrid, rows, cols) => {
+  const gridToString = useCallback((grid) => {
+    return grid.map(row => row.join('')).join('|')
+  }, [])
+
+  const checkStability = useCallback((grid, history) => {
+    const currentState = gridToString(grid)
+
+    // Check if all dead
+    const hasLife = grid.some(row => row.some(cell => cell === 1))
+    if (!hasLife) return true
+
+    // Check if pattern repeats (static or oscillating)
+    return history.includes(currentState)
+  }, [gridToString])
+
+  const updateTargetOpacities = useCallback((targetGrid, grid, rows, cols) => {
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        if (grid[i][j]) {
-          // Cell is alive - fade in
-          fadeGrid[i][j] = Math.min(FADE_STEPS, fadeGrid[i][j] + 1)
-        } else if (prevGrid && prevGrid[i][j]) {
-          // Cell just died - start fade out
-          fadeGrid[i][j] = FADE_STEPS - 1
-        } else if (fadeGrid[i][j] > 0) {
-          // Cell is fading out
-          fadeGrid[i][j] = Math.max(0, fadeGrid[i][j] - 1)
+        targetGrid[i][j] = grid[i][j] ? 1 : 0
+      }
+    }
+  }, [])
+
+  const interpolateOpacities = useCallback((opacityGrid, targetGrid, rows, cols, factor) => {
+    // Smooth interpolation - not instant, but not too slow
+    const lerpFactor = factor * 0.15
+    for (let i = 0; i < rows; i++) {
+      for (let j = 0; j < cols; j++) {
+        const current = opacityGrid[i][j]
+        const target = targetGrid[i][j]
+        const diff = target - current
+        if (Math.abs(diff) > 0.001) {
+          opacityGrid[i][j] = current + diff * lerpFactor
+        } else {
+          opacityGrid[i][j] = target
         }
       }
     }
   }, [])
 
-  const draw = useCallback((ctx, fadeGrid, rows, cols) => {
+  const draw = useCallback((ctx, opacityGrid, rows, cols) => {
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -102,24 +129,23 @@ export default function ConwayBackground() {
 
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        if (fadeGrid[i][j] > 0) {
+        if (opacityGrid[i][j] > 0.01) {
           const x = j * CELL_SIZE
           const y = i * CELL_SIZE + parallaxOffset
 
-          // Calculate distance from mouse for proximity effect
           const cellCenterX = x + CELL_SIZE / 2
           const cellCenterY = y + CELL_SIZE / 2
           const distance = Math.sqrt(
             Math.pow(cellCenterX - mouseX, 2) + Math.pow(cellCenterY - mouseY, 2)
           )
 
-          // Base opacity from fade state
-          let opacity = (fadeGrid[i][j] / FADE_STEPS) * 0.2
+          // Base opacity from interpolated state
+          let opacity = opacityGrid[i][j] * 0.2
 
           // Intensify cells near cursor
           if (distance < proximityRadius) {
             const proximityFactor = 1 - (distance / proximityRadius)
-            opacity = Math.min(0.4, opacity + proximityFactor * 0.15)
+            opacity = Math.min(0.4, opacity + proximityFactor * 0.15 * opacityGrid[i][j])
           }
 
           ctx.fillStyle = `rgba(100, 140, 160, ${opacity})`
@@ -137,7 +163,7 @@ export default function ConwayBackground() {
     }
   }, [])
 
-  const init = useCallback(() => {
+  const init = useCallback((resetStable = true) => {
     const canvas = canvasRef.current
     if (!canvas) return
 
@@ -146,17 +172,29 @@ export default function ConwayBackground() {
 
     const { cols, rows } = getGridDimensions()
     gridRef.current = createGrid(cols, rows, true)
-    fadeGridRef.current = createFadeGrid(cols, rows)
+    opacityGridRef.current = createOpacityGrid(cols, rows, 0)
+    targetOpacityGridRef.current = createOpacityGrid(cols, rows, 0)
+    historyRef.current = []
 
-    // Initialize fade grid based on initial state
+    // Initialize opacity grid based on initial state
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
         if (gridRef.current[i][j]) {
-          fadeGridRef.current[i][j] = FADE_STEPS
+          opacityGridRef.current[i][j] = 1
+          targetOpacityGridRef.current[i][j] = 1
         }
       }
     }
-  }, [getGridDimensions, createGrid, createFadeGrid])
+
+    if (resetStable) {
+      setIsStable(false)
+    }
+  }, [getGridDimensions, createGrid, createOpacityGrid])
+
+  const restart = useCallback(() => {
+    init(true)
+    lastTickRef.current = 0
+  }, [init])
 
   const animate = useCallback((timestamp) => {
     if (!isVisibleRef.current) {
@@ -171,16 +209,31 @@ export default function ConwayBackground() {
     const { cols, rows } = getGridDimensions()
 
     // Update game state at tick interval
-    if (timestamp - lastTickRef.current > TICK_INTERVAL) {
-      const prevGrid = gridRef.current
+    if (timestamp - lastTickRef.current > TICK_INTERVAL && !isStable) {
+      // Store current state in history
+      const currentState = gridToString(gridRef.current)
+      historyRef.current.push(currentState)
+      if (historyRef.current.length > STABLE_CHECK_GENERATIONS) {
+        historyRef.current.shift()
+      }
+
       gridRef.current = nextGeneration(gridRef.current, rows, cols)
-      updateFadeGrid(fadeGridRef.current, gridRef.current, prevGrid, rows, cols)
+      updateTargetOpacities(targetOpacityGridRef.current, gridRef.current, rows, cols)
+
+      // Check for stability
+      if (checkStability(gridRef.current, historyRef.current)) {
+        setIsStable(true)
+      }
+
       lastTickRef.current = timestamp
     }
 
-    draw(ctx, fadeGridRef.current, rows, cols)
+    // Always interpolate opacities for smooth animation
+    interpolateOpacities(opacityGridRef.current, targetOpacityGridRef.current, rows, cols, 1)
+
+    draw(ctx, opacityGridRef.current, rows, cols)
     animationRef.current = requestAnimationFrame(animate)
-  }, [getGridDimensions, nextGeneration, updateFadeGrid, draw])
+  }, [getGridDimensions, nextGeneration, updateTargetOpacities, interpolateOpacities, draw, gridToString, checkStability, isStable])
 
   useEffect(() => {
     init()
@@ -190,7 +243,7 @@ export default function ConwayBackground() {
     }
 
     const handleResize = () => {
-      init()
+      init(false)
     }
 
     const handleScroll = () => {
@@ -220,10 +273,26 @@ export default function ConwayBackground() {
   }, [init, animate])
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="conway-background"
-      aria-hidden="true"
-    />
+    <>
+      <canvas
+        ref={canvasRef}
+        className="conway-background"
+        aria-hidden="true"
+      />
+      {isStable && (
+        <button
+          className="conway-restart-button"
+          onClick={restart}
+          aria-label="Restart Game of Life"
+        >
+          <span className="conway-restart-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6 0 1.01-.25 1.97-.7 2.8l1.46 1.46C19.54 15.03 20 13.57 20 12c0-4.42-3.58-8-8-8zm0 14c-3.31 0-6-2.69-6-6 0-1.01.25-1.97.7-2.8L5.24 7.74C4.46 8.97 4 10.43 4 12c0 4.42 3.58 8 8 8v3l4-4-4-4v3z"/>
+            </svg>
+          </span>
+          <span className="conway-restart-text">New Life</span>
+        </button>
+      )}
+    </>
   )
 }
