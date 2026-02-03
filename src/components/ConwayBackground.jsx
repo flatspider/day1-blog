@@ -136,13 +136,14 @@ export default function ConwayBackground() {
     }
   }, [])
 
-  const draw = useCallback((ctx, opacityGrid, rows, cols) => {
+  const draw = useCallback((ctx, opacityGrid, rows, cols, isMobileDevice) => {
     const canvas = canvasRef.current
     if (!canvas) return
 
     ctx.clearRect(0, 0, canvas.width, canvas.height)
 
-    const parallaxOffset = scrollOffsetRef.current * 0.1
+    // Disable parallax on mobile to prevent scroll glitching
+    const parallaxOffset = isMobileDevice ? 0 : scrollOffsetRef.current * 0.1
     const mouseX = mouseRef.current.x
     const mouseY = mouseRef.current.y
     const proximityRadius = 150
@@ -166,8 +167,8 @@ export default function ConwayBackground() {
             Math.pow(cellCenterX - mouseX, 2) + Math.pow(cellCenterY - mouseY, 2)
           )
 
-          // Base opacity from interpolated state (slightly higher for dark background)
-          let opacity = opacityGrid[i][j] * 0.25
+          // Base opacity from interpolated state (reduced on mobile for better text legibility)
+          let opacity = opacityGrid[i][j] * (isMobileDevice ? 0.12 : 0.25)
 
           // Intensify cells near cursor
           if (distance < proximityRadius) {
@@ -280,9 +281,9 @@ export default function ConwayBackground() {
     // Always interpolate opacities for smooth animation
     interpolateOpacities(opacityGridRef.current, targetOpacityGridRef.current, rows, cols, 1)
 
-    draw(ctx, opacityGridRef.current, rows, cols)
+    draw(ctx, opacityGridRef.current, rows, cols, isMobile)
     animationRef.current = requestAnimationFrame(animate)
-  }, [getGridDimensions, nextGeneration, updateTargetOpacities, interpolateOpacities, draw, gridToString, checkStability, isStable])
+  }, [getGridDimensions, nextGeneration, updateTargetOpacities, interpolateOpacities, draw, gridToString, checkStability, isStable, isMobile])
 
   // Test mode timer
   useEffect(() => {
